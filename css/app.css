@@ -1,7 +1,10 @@
-.topbar{border: 1px solid red;}
-.topbar>.logo{}
-.topbar>.logo>.logosvg{
-    height: 200px;
-    width: 200px;
-    border: 1px solid blue;
-}
+.topbar{background: #d43c33; padding:17px 10px;}
+.topbar>.logo{position: relative;}
+.topbar>.logo>.logosvg{width: 142px; height: auto;position: absolute; left:0; top:50%; transform:translateY(-50%);}
+.topbar>.logo>.logosvg>g{fill:white;}
+.topbar>.logo>a{float:right; display:inline-block; color:white; text-align:center; font-size:15px; padding:0 10px; line-height:30px;
+    position: relative; }
+.topbar>.logo>a::after{ content:''; display:block; position:absolute; top:0; left:0; width:200%; height:200%; border:1px solid;
+    border-radius: 30px; transform: scale(.5); transform-origin: 0 0; }
+main{}
+.tabNav{}
