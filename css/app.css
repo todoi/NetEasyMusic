@@ -1,10 +1,50 @@
+/*red:#d43c33*/
+/*topbar*/
+.icon{ width: 1em; height: 1em; vertical-align: -0.15em; fill: currentColor; overflow: hidden; }
+h2.title{font-size:17px; line-height: 17px;position:relative;padding-left:9px;vertical-align:middle;margin-bottom:16px;}
+h2.title::before{content:'';display:block;position:absolute;width:2px;height:calc(100% - 1px);top:0;left:0;background-color:#d43c33;}
+.scaleBorder::after{content:''; display:block; position:absolute; top:0; left:0; width:200%; height:200%;
+    transform: scale(.5); transform-origin: 0 0; }
 .topbar{background: #d43c33; padding:17px 10px;}
 .topbar>.logo{position: relative;}
-.topbar>.logo>.logosvg{width: 142px; height: auto;position: absolute; left:0; top:50%; transform:translateY(-50%);}
+.topbar>.logo>.logosvg{width: 142px;position: absolute; left:0; top:50%; transform:translateY(-50%);}
 .topbar>.logo>.logosvg>g{fill:white;}
 .topbar>.logo>a{float:right; display:inline-block; color:white; text-align:center; font-size:15px; padding:0 10px; line-height:30px;
-    position: relative; }
-.topbar>.logo>a::after{ content:''; display:block; position:absolute; top:0; left:0; width:200%; height:200%; border:1px solid;
-    border-radius: 30px; transform: scale(.5); transform-origin: 0 0; }
-main{}
-.tabNav{}
+    position: relative;}
+.topbar>.logo>a::after{border-radius: 30px; border:1px solid;  }
+main{background-color:#fcfcfd;}
+
+/*tab navigation*/
+.tabNav{background-color:white; display:flex; position:relative;}
+.tabNav::after{border-bottom:1px solid #cdcccc;z-index:0;}
+.tabNav>li{width:33.33333%;text-align:center;position:relative;z-index:1;}
+.tabNav>li>span{ border-top: 3px solid transparent; border-bottom: 2px solid transparent; display:inline-block; font-size:15px;
+    line-height:35px;padding:0 5px;}
+.tabNav>li.active>span{border-bottom-color:#d43c33;color:#d43c33;}
+
+/*tab items*/
+.tabContent{}
+.tabContent>li{display:none}
+.tabContent>li.active{display:block}
+
+/*推荐音乐页面*/
+.pageRecommendList{padding-top: 21px;}
+/*推荐歌单*/
+.recoPlaylists-container{}
+.recoPlaylists-container>.recoPlaylists{display:flex; flex-wrap:wrap; justify-content: space-between;}
+.recoPlaylists-container>.recoPlaylists>a{width: calc(33.333333% - 2px);padding-bottom:16px;}
+.recoPlaylists-container>.recoPlaylists>a>p{font-size:13px;display:-webkit-box;-webkit-box-orient: vertical;margin-top:6px;
+    padding-left:6px;padding-right:2px;overflow:hidden;-webkit-line-clamp:2;line-height:15px;height:30px;}
+.recoPlaylists-container>.recoPlaylists .poster{position:relative;width:100%;padding-top:100%;}
+.recoPlaylists-container>.recoPlaylists .poster>img{width: 100%;height:auto;vertical-align:top;position:absolute;
+    display:block;top:0;left:0;}
+.recoPlaylists-container>.recoPlaylists .poster>span{position: absolute;top:5px;right:5px;color:white;
+    font-size:12px;line-height:12px;padding-left:13px;background:url("../images/headset.svg") 0 0/ 12px no-repeat;}
+.recoPlaylists-container>.recoPlaylists .poster>i{position:absolute;left:0;top:0;height:20px;width:20px;background:url("../images/champion.svg")}
+/*最新音乐*/
+.latestMusic-container{padding-top:25px;}
+.latestMusic-container>.latestMusic>li{display:flex;}
+.latestMusic-container>.latestMusic>li:first-child{padding-top:5px;}
+.latestMusic-container>.latestMusic>li:not(first-child){}
+.latestMusic-container>.latestMusic .songName{font-size:17px;}
+.latestMusic-container>.latestMusic .singerAlbum{font-size:12px;color:#888;}
