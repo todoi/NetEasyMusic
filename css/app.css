@@ -3,11 +3,11 @@
 /*topbar*/
 .icon{ width: 1em; height: 1em; vertical-align: -0.15em; fill: currentColor; overflow: visible; }
 h2.title{font-size:17px; line-height: 17px;position:relative;padding-left:9px;vertical-align:middle;margin-bottom:16px;}
-h2.title::before{content:'';display:block;position:absolute;width:2px;height:calc(100% - 1px);top:0;left:0;background-color:#d43c33;}
-.scaleBorder::after{content:''; display:block; position:absolute; top:0; left:0; width:200%; height:200%;
+h2.title::before{content:'';position:absolute;width:2px;height:calc(100% - 1px);top:0;left:0;background-color:#d43c33;}
+.scaleBorder::after{content:''; position:absolute; top:0; left:0; width:200%; height:200%;
     transform: scale(.5); transform-origin: 0 0; }
 .topbar{height:64px;}
-.topbar>.logo{background: #d43c33;padding:17px 10px;position:fixed;top:0;left:0;width:100%;z-index:1;}
+.topbar>.logo{background: #d43c33;padding:17px 10px;position:fixed;top:0;left:0;width:100%;z-index:5;}
 .topbar>.logo>.logosvg{width: 142px;height:26px;position: absolute; left:10px; top:50%; transform:translateY(-50%);}
 .topbar>.logo>.logosvg>g{fill:white;}
 .topbar>.logo>a{float:right; display:inline-block; color:white; text-align:center; font-size:15px; padding:0 10px; line-height:30px;
@@ -17,7 +17,7 @@ h2.title::before{content:'';display:block;position:absolute;width:2px;height:cal
 main{background-color:#fcfcfd;}
 /*tab navigation*/
 main::before{content:'';display:block;height:40px;}
-.tabNav{background-color:white; display:flex; position:fixed;top:64px;left:0;width:100%;z-index:2;}
+.tabNav{background-color:white; display:flex; position:fixed;top:64px;left:0;width:100%;z-index:5;}
 .tabNav::after{border-bottom:1px solid #cdcccc;z-index:0;}
 .tabNav>li{width:33.33333%;text-align:center;position:relative;z-index:1;}
 .tabNav>li>span{ border-top: 3px solid transparent; border-bottom: 2px solid transparent; display:inline-block; font-size:15px;
@@ -47,7 +47,20 @@ main::before{content:'';display:block;height:40px;}
 .latestMusic-container{padding-top:25px;}
 .latestMusic-container>.latestMusic>a{display:flex;margin-left:10px;padding:6px 10px 6px 0;
     justify-content:space-between;align-items:center;position:relative;}
-.latestMusic-container>.latestMusic>a::after{border-bottom:1px solid #ddd;}
+.latestMusic-container>.latestMusic>a::after{border-bottom:1px solid #ddd;z-index:0;}
+.latestMusic-container>.latestMusic>a>.songInfo,
+.latestMusic-container>.latestMusic>a>.playButton{position:relative;z-index:1;}
 .latestMusic-container>.latestMusic .songName{font-size:17px;}
 .latestMusic-container>.latestMusic .singerAlbum{font-size:12px;color:#888;}
+.latestMusic-container>.latestMusic .singerAlbum>.singer{padding-left:1px;}
 .latestMusic-container>.latestMusic .playButton>.icon{width:22px;height:22px;fill:rgba(0,0,0,.4);vertical-align:top;}
+/*网易云音乐广告*/
+.art-container{padding-top:53.3%;margin-top:4px;background:url("../images/artBackground.png") center/contain no-repeat;position:relative;}
+.art-container>.art{position:absolute;top:31.7065%;left:0;width:100%;text-align:center;}
+.art-container>.art>.artSvg{width:230px;vertical-align:top;}
+.art-container>.art>.openAPP{display:block;color:#d43c33;border:1px solid;font-size:16px;margin:15px 37px 4px;padding:11px;
+    line-height:1;border-radius:38px;}
+.art-container>.art>.copyright{display:block;font-size:12px;color:#888;transform: scale(.75);}
+@media screen and (max-width: 374px){
+    .art-container>.art{top:22.3088%;}
+}
