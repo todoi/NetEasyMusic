@@ -264,7 +264,7 @@
                 </div>
             </li>
             <!--热歌榜-->
-            <li class="pageHotList active">
+            <li class="pageHotList">
                 <div class="banner">
                     <div class="titleIcon"></div>
                     <span class="updateTime">更新日期：08月24日</span>
@@ -614,15 +614,20 @@
                 <a href="#" class="loadAll">查看完整榜单 &gt;</a>
             </li>
             <!--搜索-->
-            <li class="pageSearch">
-                <div>
-                    <i class="searchIcon"></i>
-                    <input type="text" placeholder="搜索歌曲、歌手、专辑">
+            <li class="pageSearch active">
+                <div class="textInput-container scaleBorder">
+                    <div class="textInput">
+                        <span class="textHolder">搜索歌曲、歌手、专辑</span>
+                        <input type="text" id="searchInput" placeholder="">
+                    </div>
                 </div>
-                <div>
-                    <div class="hotSearch"></div>
-                    <div class="result"></div>
-                </div>
+                <ul>
+                    <li class="recommendSearch active">
+                        <div class="hotSearch"></div>
+                        <div class="history"></div>
+                    </li>
+                    <li class="result"></li>
+                </ul>
             </li>
         </ul>
     </main>
@@ -631,14 +636,19 @@
 <script src="//at.alicdn.com/t/font_398797_ehkomz5xznzv9529.js"></script>
 <script>
     $('.tabNav>li').on('click',function(e){
-        let $element = $(e.currentTarget)
-        let index = $element.index()
+        var $element = $(e.currentTarget)
+        var index = $element.index()
         $element.siblings().removeClass('active')
             .end().addClass('active')
             .parent().parent()
             .find('.tabContent')
             .children().removeClass('active')
             .eq(index).addClass('active')
+    })
+    $('#searchInput').on('input',function(e){
+        var $element = $(e.currentTarget)
+        var $textHolder = $('.textInput>.textHolder')
+        $element[0].value ? $textHolder.text('') : $textHolder.text('搜索歌曲、歌手、专辑')
     })
 </script>
 </body>

@@ -44,7 +44,7 @@ main::before{content:'';display:block;height:40px;}
 .tabContent>li{display:none}
 .tabContent>li.active{display:block}
 
-/*页面推荐音乐*/
+/*推荐音乐页面*/
 .pageRecommendList{padding-top: 21px;}
 /*推荐歌单*/
 .recoPlaylists-container{}
@@ -69,7 +69,7 @@ main::before{content:'';display:block;height:40px;}
 .art-container>.art>.copyright{display:block;font-size:12px;color:#888;transform: scale(.75);}
 @media screen and (max-width: 374px){ .art-container>.art{top:22.3088%;} }
 
-/*页面热歌榜*/
+/*热歌榜页面*/
 /*banner*/
 .pageHotList>.banner{padding:6.6666667% 0 6.6666667% 20px; background:url("../images/bannerBackground.jpg")no-repeat;
     background-size:cover;position:relative;z-index:1;}
@@ -84,4 +84,19 @@ main::before{content:'';display:block;height:40px;}
 .pageHotList>.songList>.songInfo-container:nth-child(-n+3)>.order{color:#d43c33;}
 /*查看完整表单*/
 .pageHotList>.loadAll{display:block;color:#888;text-align:center;padding:17px 0;}
+
+/*搜索页面*/
+.pageSearch{}
+.pageSearch>.textInput-container{padding:15px 0;position:relative;z-index:1;}
+.pageSearch>.textInput-container::after{border-bottom: 1px solid #ddd;z-index:-1;}
+.pageSearch>.textInput-container>.textInput{height:30px;width:94.66667%;margin:0 auto;position:relative;
+    background:#ebecec;border-radius:30px;}
+.pageSearch>.textInput-container>.textInput>.textHolder{display:block;padding:5px 0 0 30px;color:#c9c9c9;}
+.pageSearch>.textInput-container>.textInput>#searchInput{border:0;position:absolute;left:0;top:0;width:100%;height:100%;padding:0 30px;font-size:14px;color:#333;
+    background:url("../images/search.svg") 8px 9px /13px 13px no-repeat transparent;}
+.pageSearch>.textInput-container>.textInput>#searchInput:focus{outline:0;}
+.pageSearch>ul{}
+.pageSearch>ul>.recommendSearch{display:none;}
+.pageSearch>ul>.result{display:none;}
+.pageSearch>ul>li.active{display:block;}
 
