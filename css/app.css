@@ -83,5 +83,5 @@ main::before{content:'';display:block;height:40px;}
 .pageHotList>.songList>.songInfo-container::after{left:28px;}
 .pageHotList>.songList>.songInfo-container:nth-child(-n+3)>.order{color:#d43c33;}
 /*查看完整表单*/
-.pageHotList>.loadAll{}
+.pageHotList>.loadAll{display:block;color:#888;text-align:center;padding:17px 0;}
 
