@@ -33,7 +33,7 @@
         </ul>
         <!--tab content-->
         <ul class="tabContent">
-            <li class="pageRecommendList">
+            <li class="pageRecommendList active">
                 <!--推荐歌单-->
                 <div class="recoPlaylists-container">
                     <h2 class="title">推荐歌单</h2>
@@ -614,19 +614,62 @@
                 <a href="#" class="loadAll">查看完整榜单 &gt;</a>
             </li>
             <!--搜索-->
-            <li class="pageSearch active">
+            <li class="pageSearch">
                 <div class="textInput-container scaleBorder">
                     <div class="textInput">
                         <span class="textHolder">搜索歌曲、歌手、专辑</span>
                         <input type="text" id="searchInput" placeholder="">
+                        <i class="empty"></i>
                     </div>
                 </div>
-                <ul>
+                <ul class="showSearch">
                     <li class="recommendSearch active">
-                        <div class="hotSearch"></div>
-                        <div class="history"></div>
+                        <div class="hotSearch">
+                            <h4>热门搜索</h4>
+                            <div class="hotSearchValue">
+                                <a href="#" class="scaleBorder">那年花开月正圆</a>
+                                <a href="#" class="scaleBorder">BLACKPINK</a>
+                                <a href="#" class="scaleBorder">OUR TWENTY FOR (Japanese Ver.)</a>
+                                <a href="#" class="scaleBorder">Jony J</a>
+                                <a href="#" class="scaleBorder">What Are Words</a>
+                            </div>
+                        </div>
+                        <div class="history">
+                            <ul class="searchList">
+                                <li class="searchItem">
+                                    <i class="historyIcon searchIcon"></i>
+                                    <div class="value-container scaleBorder">
+                                        <div class="value">jjjjjfffff</div>
+                                        <i class="close"></i>
+                                    </div>
+                                </li>
+                                <li class="searchItem">
+                                    <i class="historyIcon"></i>
+                                    <div class="value-container scaleBorder">
+                                        <div class="value">窦唯 无地自容</div>
+                                        <i class="close"></i>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
-                    <li class="result"></li>
+                    <li class="result">
+                        <h4 class="scaleBorder">搜索“<span>jjjj</span>”</h4>
+                        <ul class="searchList">
+                            <li class="searchItem">
+                                <i class="searchIcon"></i>
+                                <div class="value-container scaleBorder">
+                                    <div class="value">jjjjjfffff</div>
+                                </div>
+                            </li>
+                            <li class="searchItem">
+                                <i class="searchIcon"></i>
+                                <div class="value-container scaleBorder">
+                                    <div class="value">窦唯 无地自容</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
         </ul>
@@ -648,7 +691,25 @@
     $('#searchInput').on('input',function(e){
         var $element = $(e.currentTarget)
         var $textHolder = $('.textInput>.textHolder')
+        var $empty = $('.textInput>.empty')
+        if ($element[0].value ){
+            $('.showSearch>.recommendSearch').removeClass('active')
+            $('.showSearch>.result').addClass('active')
+        }else{
+            $('.showSearch>.recommendSearch').addClass('active')
+            $('.showSearch>.result').removeClass('active')
+        }
         $element[0].value ? $textHolder.text('') : $textHolder.text('搜索歌曲、歌手、专辑')
+        $element[0].value ? $empty.addClass('active') : $empty.removeClass('active')
+    })
+    $('.textInput>.empty').on('click',function(e){
+        var $textHolder = $('.textInput>.textHolder')
+        var $empty = $('.textInput>.empty')
+        $('#searchInput')[0].value = null
+        $textHolder.text('搜索歌曲、歌手、专辑')
+        $empty.removeClass('active')
+        $('.showSearch>.recommendSearch').addClass('active')
+        $('.showSearch>.result').removeClass('active')
     })
 </script>
 </body>
