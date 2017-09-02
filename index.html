@@ -96,7 +96,7 @@
                             <div class="songInfo">
                                 <h3 class="songName">你是我最愚蠢的一次浪漫</h3>
                                 <p class="singerAlbum">
-                                    <svg class="icon"aria-hidden="true">
+                                    <svg class="icon" aria-hidden="true">
                                         <use xlink:href="#icon-sq"></use>
                                     </svg>
                                     <span class="singer">房东的猫 - 你是我最愚蠢的一次浪漫</span>
@@ -131,7 +131,7 @@
                         <div class="songInfo">
                             <h3 class="songName">追光者 <span>(电视剧《夏至未至》插曲)</span></h3>
                             <p class="singerAlbum">
-                                <svg class="icon"aria-hidden="true">
+                                <svg class="icon" aria-hidden="true">
                                     <use xlink:href="#icon-sq"></use>
                                 </svg>
                                 <span class="singer">岑宁儿 - 夏至未至 影视原声带</span>
@@ -582,11 +582,13 @@
 </script>
 <!--av-min.js-->
 <script>
-    var APP_ID = 'YQ4yjuFRLMM8TRf2w3pSr3QH-gzGzoHsz';
-    var APP_KEY = 'oBQKY2jc2MYHDcxLP3QoLxtL';
-    AV.init({ appId: APP_ID, appKey: APP_KEY });
+    !function() {
+        var APP_ID = 'YQ4yjuFRLMM8TRf2w3pSr3QH-gzGzoHsz';
+        var APP_KEY = 'oBQKY2jc2MYHDcxLP3QoLxtL';
+        AV.init({appId: APP_ID, appKey: APP_KEY});
+    }()
 
-    //推荐歌单写入内容
+    //推荐歌单写入
     let $recoPlaylist = $('.recoPlaylist')
     var recommendPlaylist = new AV.Query('RecommendPlaylist');
     recommendPlaylist.find().then(function (lists) {
@@ -607,8 +609,96 @@
         });
     }).then(function(lists) { /* 更新成功*/ }, function (error) { /* 异常处理*/ console.log(error) });
 
-    //最新音乐写入
-    let playlist = new AV.Query('Playlist')
+    //音乐列表载入
+    let args = {selector:'.latestMusic',objectId:'59a8f8d8570c35006b1cb153'}
+    function getPlaylist(objectId){
+        let playlist = new AV.Query('Playlist')
+        let promise = playlist.get(objectId).then(function(latestMusic){
+            let latestContent = latestMusic.attributes.content
+            let contentArr = window.JSON.parse(latestContent)
+            return contentArr
+        },function(error){console.log(error)})
+        return promise
+    }
+    function getSongInfo(playlist,selector,html,callback){
+        let orderArray = []
+        let countIndex = []
+        playlist.then(function(list){
+            list.forEach(function(songId,index){
+                let song = new AV.Query('Song');
+                song.startsWith('songId', songId+'').find().then(function(array){
+                    let {attributes:songInfo,id} = array[0]
+                    songInfo.id = id
+                    orderArray[index] = songInfo
+                    countIndex.length +=1
+                    countIndex.length === 10 && callback(orderArray,selector,html)
+                },function(error){
+                    console.log(error);
+                    orderArray[index]=null;
+                    countIndex.length += 1
+                    countIndex.length === 10 && callback(orderArray,selector,html)
+                })
+            })
+        },function(error){console.log(error)})
+    }
+    function writeSong(orderArray,selector,html){
+        let $latestMusic = $(selector)
+        orderArray.forEach(function(songInfo){
+            let {songName, singer, album, sq, id} = songInfo
+            let newHtml;
+            newHtml = html.replace(/{{songName}}/g, songName)
+                .replace(/{{singer}}/g, singer)
+                .replace(/{{album}}/g, album)
+                .replace(/{{sq}}/g, sq)
+                .replace(/{{id}}/g, id);
+            $latestMusic.append(newHtml)
+        })
+    }
+
+    //最新音乐载入
+    !function () {
+        let playlist = getPlaylist('59a8f8d8570c35006b1cb153')
+        let html = `<a href="/song?id={{id}}" class="scaleBorder songInfo-container">
+                        <div class="songInfo">
+                            <h3 class="songName">{{songName}}</h3>
+                            <p class="singerAlbum">
+                                <svg class="icon {{sq}}" aria-hidden="true">
+                                    <use xlink:href="#icon-sq"></use>
+                                </svg>
+                                <span class="singer">{{singer}}{{album}}</span>
+                            </p>
+                        </div>
+                        <div class="playButton">
+                            <svg class="icon" aria-hidden="false">
+                                <use xlink:href="#icon-play"></use>
+                            </svg>
+                        </div>
+                    </a> `
+        getSongInfo(playlist, '.latestMusic', html, writeSong)
+    }()
+    !function () {
+        let playlist = getPlaylist('59a8f8e01b69e60064127cb7')
+        let html = `<a href="/song?id={{id}}" class="scaleBorder songInfo-container">
+                        <div class="songInfo">
+                            <h3 class="songName">{{songName}}</h3>
+                            <p class="singerAlbum">
+                                <svg class="icon {{sq}}" aria-hidden="true">
+                                    <use xlink:href="#icon-sq"></use>
+                                </svg>
+                                <span class="singer">{{singer}}{{album}}</span>
+                            </p>
+                        </div>
+                        <div class="playButton">
+                            <svg class="icon" aria-hidden="false">
+                                <use xlink:href="#icon-play"></use>
+                            </svg>
+                        </div>
+                    </a> `
+        getSongInfo(playlist, '.songList', html, writeSong)
+    }()
+
+
+    /*let playlist = new AV.Query('Playlist')
     let $latestMusic = $('.latestMusic')
     playlist.get('59a8f8d8570c35006b1cb153').then(function(latestMusic){
         let orderArray = []
@@ -649,7 +739,7 @@
                 countIndex.length === 10 && orderArray.forEach(function(html){ $latestMusic.append(html) })
             })
         })
-    },function(error){ alert(error) })
+    },function(error){ alert(error) })*/
 </script>
 </body>
 </html>
