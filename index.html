@@ -186,22 +186,28 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="result">
+                    <li class="nameResult">
                         <h4 class="scaleBorder">搜索“<span></span>”</h4>
-                        <ul class="searchList">
-                            <li class="searchItem">
-                                <i class="searchIcon"></i>
-                                <div class="value-container scaleBorder">
-                                    <div class="value">jjjjjfffff</div>
-                                </div>
-                            </li>
-                            <li class="searchItem">
-                                <i class="searchIcon"></i>
-                                <div class="value-container scaleBorder">
-                                    <div class="value">窦唯 无地自容</div>
-                                </div>
-                            </li>
-                        </ul>
+                        <div class="searchList">
+                        </div>
+                    </li>
+                    <li class="allResult">
+                        <a href="#" class="scaleBorder songInfo-container">
+                            <div class="songInfo">
+                                <h3 class="songName">你是我最愚蠢的一次浪漫</h3>
+                                <p class="singerAlbum">
+                                    <svg class="icon" aria-hidden="true">
+                                        <use xlink:href="#icon-sq"></use>
+                                    </svg>
+                                    <span class="singer">房东的猫 - 你是我最愚蠢的一次浪漫</span>
+                                </p>
+                            </div>
+                            <div class="playButton">
+                                <svg class="icon" aria-hidden="false">
+                                    <use xlink:href="#icon-play"></use>
+                                </svg>
+                            </div>
+                        </a>
                     </li>
                 </ul>
             </li>
@@ -212,8 +218,15 @@
 <script src="./vendors/jquery.min.js"></script>
 <script src="//at.alicdn.com/t/font_398797_ehkomz5xznzv9529.js"></script>
 <script>
-    //tab 推荐歌单 | 热榜 | 搜索
-    $('.tabNav>li').on('click',function(e){
+    //init leanClound
+    !function () {
+        var APP_ID = 'YQ4yjuFRLMM8TRf2w3pSr3QH-gzGzoHsz';
+        var APP_KEY = 'oBQKY2jc2MYHDcxLP3QoLxtL';
+        AV.init({appId: APP_ID, appKey: APP_KEY});
+    }()
+
+    //tab切换 推荐歌单 | 热榜 | 搜索
+    $('.tabNav>li').on('click', function (e) {
         var $element = $(e.currentTarget)
         var index = $element.index()
         $element.siblings().removeClass('active')
@@ -225,52 +238,135 @@
     })
 
     //搜索框输入
-    $('#searchInput').on('input',function(e){
+    $('#searchInput').on('input', function (e) {
         var $element = $(e.currentTarget)
         var $textHolder = $('.textInput>.textHolder')
         var $empty = $('.textInput>.empty')
+        var text = $element[0].value
         //切换热门搜索页面和搜索结果页面
-        if ($element[0].value ){
-            $('.showSearch>.recommendSearch').removeClass('active')
-            $('.showSearch>.result').addClass('active')
-        }else{
+        if (text) {
+            $('.showSearch>li').removeClass('active')
+            $('.showSearch>.nameResult').addClass('active')
+        } else {
+            $('.showSearch>li').removeClass('active')
             $('.showSearch>.recommendSearch').addClass('active')
-            $('.showSearch>.result').removeClass('active')
         }
-        $element[0].value ? $textHolder.text('') : $textHolder.text('搜索歌曲、歌手、专辑')
+        //toggle text holder
+        text ? $textHolder.text('') : $textHolder.text('搜索歌曲、歌手、专辑')
         //输入字符就让清空按钮出现
-        $element[0].value ? $empty.addClass('active') : $empty.removeClass('active')
+        text ? $empty.addClass('active') : $empty.removeClass('active')
         //显示搜索字符
-        $('.result>h4.scaleBorder>span').text($element[0].value)
+        $('.nameResult>h4.scaleBorder>span').text($element[0].value)
+        $('.searchList').html('')
+
+        //显示搜索歌名的结果
+        if (text.trim()) {
+            var songNameQuery = new AV.Query('Song');
+            songNameQuery.contains('songName', text);
+            songNameQuery.find().then(function (result) {
+                if (result.length) {
+                    result.forEach(function (songObject) {
+                        let id = songObject.id
+                        let songName = songObject.attributes.songName
+                        let html = `
+                        <a href="/song?id=${id}" class="searchItem">
+                            <i class="searchIcon"></i>
+                            <div class="value-container scaleBorder">
+                                <div class="value">${songName}</div>
+                            </div>
+                        </a>`
+                        $('.searchList').append(html)
+                    })
+                } else {
+                    let html = `<div class="prompt">请按回车键查看更多<div>`
+                    $('.searchList').html(html)
+                }
+            })
+        }
     })
 
     // 搜索框清空
-    $('.textInput>.empty').on('click',function(e){
+    $('.textInput>.empty').on('click', function (e) {
         var $textHolder = $('.textInput>.textHolder')
         var $empty = $('.textInput>.empty')
         $('#searchInput')[0].value = null
         $textHolder.text('搜索歌曲、歌手、专辑')
         $empty.removeClass('active')
+        $('.showSearch>li').removeClass('active')
         $('.showSearch>.recommendSearch').addClass('active')
-        $('.showSearch>.result').removeClass('active')
         //清空搜索字符
-        $('.result>h4.scaleBorder>span').text('')
+        $('.nameResult>h4.scaleBorder>span').text('')
     })
-</script>
-<!--av-min.js-->
-<script>
-    !function() {
-        var APP_ID = 'YQ4yjuFRLMM8TRf2w3pSr3QH-gzGzoHsz';
-        var APP_KEY = 'oBQKY2jc2MYHDcxLP3QoLxtL';
-        AV.init({appId: APP_ID, appKey: APP_KEY});
-    }()
+
+    //监听回车
+    $('#searchInput').on('keypress', function (e) {
+        $('.allResult').html('')
+        let text = $('#searchInput')[0].value
+        if (!text.trim()){return}
+        var key = e.which || e.keyCode;
+        // 13 is enter
+        if (key === 13) {
+            $('.showSearch>li').removeClass('active')
+            $('.showSearch>.allResult').addClass('active')
+
+            var songNameQuery = new AV.Query('Song');
+            songNameQuery.contains('songName', text);
+            var singerQuery = new AV.Query('Song');
+            singerQuery.contains('singer', text);
+            var albumQuery = new AV.Query('Song');
+            albumQuery.contains('album', text);
+            var query = AV.Query.or(songNameQuery, singerQuery, albumQuery);
+
+            query.find().then(function (result) {
+                if (result.length) {
+                    let orderArr = []
+                    result.forEach((songObject)=>{
+                        let songInfo=songObject.attributes
+                        songInfo.id=songObject.id
+                        orderArr.push(songInfo)
+                    })
+                    console.log(orderArr)
+                    let html = `<a href="/song?id={{id}}" class="scaleBorder songInfo-container">
+                        <div class="songInfo">
+                            <h3 class="songName">{{songName}} <span>{{quote}}</span></h3>
+                            <p class="singerAlbum">
+                                <svg class="icon {{sq}}" aria-hidden="true">
+                                    <use xlink:href="#icon-sq"></use>
+                                </svg>
+                                <span class="singer">{{singer}}{{album}}</span>
+                            </p>
+                        </div>
+                        <div class="playButton">
+                            <svg class="icon" aria-hidden="false">
+                                <use xlink:href="#icon-play"></use>
+                            </svg>
+                        </div>
+                    </a> `
+                    writeSong(orderArr, '.allResult', html)
+                } else {
+                    let html = `<div class="prompt">暂无搜索结果<div>`
+                    $('.allResult').html(html)
+                }
+            }, function (error) {
+                console.log(error)
+            })
+        }
+    }) ;
+
+    //监听搜索歌名结果的click
+    $('.searchList').on('click', '.searchItem', function (e) {
+        e.preventDefault()
+        $('.textInput>.empty').click()
+        let url = $(e.target).closest('.searchItem').attr('href')
+        console.log(url)
+        window.open(url, '_self')
+    })
 
     //推荐歌单写入
     let $recoPlaylist = $('.recoPlaylist')
     var recommendPlaylist = new AV.Query('RecommendPlaylist');
-    recommendPlaylist.find().then(function (lists) {
-        lists = lists.slice(0,6)
-        lists.forEach(function(list,index) {
+    recommendPlaylist.find().then(function (lists) { lists = lists.slice(0, 6)
+        lists.forEach(function (list, index) {
             let {attributes, id} = list
             let {title, poster, count, champion} = attributes
             let $element = $($recoPlaylist[index])
@@ -278,65 +374,73 @@
             let $count = $element.find('.count')
             let $champion = $element.find('.champion')
             let $title = $element.find('p')
-            $element.attr({'href':`/playlist?id=?${id}`,'alt':title})
-            $img.attr('src',poster)
+            $element.attr({'href': `/playlist?id=?${id}`, 'alt': title})
+            $img.attr('src', poster)
             $count.text(count)
             champion === "true" && $champion.addClass('champion')
             $title.text(title)
         });
-    }).then(function(lists) { /* 更新成功*/ }, function (error) { /* 异常处理*/ console.log(error) });
+    }).then(function (lists) { /* 更新成功*/
+    }, function (error) { /* 异常处理*/
+        console.log(error)
+    });
 
-    //音乐列表载入
-    let args = {selector:'.latestMusic',objectId:'59a8f8d8570c35006b1cb153'}
-    function getPlaylist(objectId){
+    //音乐列表载入函数
+    let args = {selector: '.latestMusic', objectId: '59a8f8d8570c35006b1cb153'}
+    function getPlaylist(objectId) {
         let playlist = new AV.Query('Playlist')
         let promise
-        promise = playlist.get(objectId).then(function(song){
+        promise = playlist.get(objectId).then(function (song) {
             let content = song.attributes.content
             let contentArr
             contentArr = window.JSON.parse(content)
             return contentArr
-        },function(error){console.log(error)})
+        }, function (error) {
+            console.log(error)
+        })
         return promise
     }
-    function getSongInfo(args){
-        let{ playlist,selector,html,callback,writeOrder } = args
+    function getSongInfo(args) {
+        let {playlist, selector, html, callback, writeOrder} = args
         let orderArray = []
         let countIndex = []
-        playlist.then(function(list){
+        playlist.then(function (list) {
             let listLength = list.length
-            list.forEach(function(songId,index){
+            list.forEach(function (songId, index) {
                 let song = new AV.Query('Song');
-                song.startsWith('songId', songId+'').find().then(function(array){
+                song.startsWith('songId', songId + '').find().then(function (array) {
                     //array 有可能返回空数组
-                    if(array.length){
-                        let {attributes:songInfo,id} = array[0]
+                    if (array.length) {
+                        let {attributes:songInfo, id} = array[0]
                         songInfo.id = id
                         orderArray[index] = songInfo
                     }
                     countIndex.push(1)
-                    countIndex.length === listLength && callback(orderArray,selector,html,writeOrder)
-                },function(error){
+                    countIndex.length === listLength && callback(orderArray, selector, html, writeOrder)
+                }, function (error) {
                     console.log(error);
-                    orderArray[index]=null;
+                    orderArray[index] = null;
                     countIndex.push(1)
-                    countIndex.length === listLength && callback(orderArray,selector,html,writeOrder)
+                    countIndex.length === listLength && callback(orderArray, selector, html, writeOrder)
                 })
             })
-        },function(error){console.log(error)})
+        }, function (error) {
+            console.log(error)
+        })
     }
-    function writeSong(orderArray,selector,html,writeOrder,){
+    function writeSong(orderArray, selector, html, writeOrder) {
         let $parentElement = $(selector)
-        orderArray.forEach(function(songInfo,index){
+        orderArray.forEach(function (songInfo, index) {
             let {songName, singer, album, sq, id} = songInfo
             let newHtml = html;
             let quote = ''
-            if(songName.match(/\(.*\)/)){
+            if (songName.match(/\(.*\)/)) {
                 quote = songName.match(/\(.*\)/)[0]
-                songName = songName.replace(/\(.*\)/,'')}
-            if (writeOrder){
+                songName = songName.replace(/\(.*\)/, '')
+            }
+            if (writeOrder) {
                 let order = index + 1
-                order = order<10? '0' + order : order + ''
+                order = order < 10 ? '0' + order : order + ''
                 newHtml = newHtml.replace(/{{order}}/g, order)
             }
             newHtml = newHtml.replace(/{{songName}}/g, songName)
@@ -368,7 +472,7 @@
                             </svg>
                         </div>
                     </a> `
-        let args = {playlist:playlist,html:html,selector:'.latestMusic',callback:writeSong}
+        let args = {playlist: playlist, html: html, selector: '.latestMusic', callback: writeSong}
         getSongInfo(args)
     }()
     //热歌榜列表载入
@@ -392,10 +496,11 @@
                             </svg>
                         </div>
                     </a> `
-        let args = {playlist:playlist,html:html,selector:'.songList',callback:writeSong,writeOrder:true}
+        let args = {playlist: playlist, html: html, selector: '.songList', callback: writeSong, writeOrder: true}
         getSongInfo(args)
     }()
 
 </script>
+
 </body>
 </html>

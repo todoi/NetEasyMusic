@@ -124,9 +124,11 @@ main::before{content:'';display:block;height:40px;}
 .pageSearch>ul.showSearch .history .historyIcon{ background:url("../images/historyIcon.svg") 0 0 /cover no-repeat;}
 .pageSearch>ul.showSearch .value-container>.close{width:12px;height:12px; background:url("../images/close.svg") 0 0 /cover no-repeat;margin-right:18px;}
 /*搜索结果*/
-.pageSearch>ul.showSearch>.result{display:none;padding-left:10px;}
-.pageSearch>ul.showSearch>.result>h4{position:relative;font-size:15px;color:#507daf;line-height:16px;padding:17px 0;}
-.pageSearch>ul.showSearch>.result>h4::after{border-bottom:1px solid #ddd;}
-.pageSearch>ul.showSearch .result .searchIcon{ background:url("../images/search.svg") 0 0 /cover no-repeat;}
+.pageSearch>ul.showSearch>.nameResult{display:none;padding-left:10px;}
+.pageSearch>ul.showSearch>.nameResult>h4{position:relative;font-size:15px;color:#507daf;line-height:16px;padding:17px 0;}
+.pageSearch>ul.showSearch>.nameResult>h4::after{border-bottom:1px solid #ddd;}
+.pageSearch>ul.showSearch .nameResult .searchIcon{ background:url("../images/search.svg") 0 0 /cover no-repeat;}
+.pageSearch>ul.showSearch>.allResult{display:none;}
+.pageSearch>ul.showSearch .searchList>.prompt,.allResult>.prompt{text-align:center;margin-right:10px;color:#333;padding: 20px 0;}
 .pageSearch>ul.showSearch>li.active{display:block;}
 
