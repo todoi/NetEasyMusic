@@ -118,11 +118,12 @@ main::before{content:'';display:block;height:40px;}
 .searchList>.searchItem>.searchIcon{height:15px;width:15px;margin-right:10px;}
 .searchList>.searchItem>.value-container{flex-grow:1;display:flex;align-items:center;padding:12px 0;position:relative;z-index:1;}
 .searchList>.searchItem>.value-container::after{border-bottom:1px solid #ddd;z-index:-1;}
-.searchList>.searchItem>.value-container>.value{flex-grow:1;}
+.searchList>.searchItem>.value-container>.value{flex:1; overflow:hidden;text-overflow:ellipsis;width:0;}
 .pageSearch>ul.showSearch>.recommendSearch{display:none;}
 .pageSearch>ul.showSearch>.recommendSearch>.history{padding-left:10px;padding-top:8px;}
 .pageSearch>ul.showSearch .history .historyIcon{ background:url("../images/historyIcon.svg") 0 0 /cover no-repeat;}
-.pageSearch>ul.showSearch .value-container>.close{width:12px;height:12px; background:url("../images/close.svg") 0 0 /cover no-repeat;margin-right:18px;}
+.pageSearch>ul.showSearch .value-container>.close{width:12px;height:12px; background:url("../images/close.svg") 0 0 /cover no-repeat;
+   margin:0 18px;}
 /*搜索结果*/
 .pageSearch>ul.showSearch>.nameResult{display:none;padding-left:10px;}
 .pageSearch>ul.showSearch>.nameResult>h4{position:relative;font-size:15px;color:#507daf;line-height:16px;padding:17px 0;}
