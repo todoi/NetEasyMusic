@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/todoi/NetEasyMusic#readme",
   "dependencies": {
-    "jquery": "^3.2.1"
+    "jquery": "^3.2.1",
+    "leancloud-storage": "^3.1.1"
   }
 }
