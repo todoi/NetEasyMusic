@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="shortcut icon" href="//s1.music.126.net/music.ico?v1">
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/song.css">
+    <script src="//at.alicdn.com/t/font_398797_agj89kayh9f6r.js"></script>
+</head>
+<body>
+<div class="page">
+    <div class="player-wrapper">
+        <div class="needle"></div>
+        <div class="disc">
+            <div class="default-poster"></div>
+            <div class="song-poster">
+                <div class="control">
+                    <svg class="icon play" aria-hidden="true">
+                        <use xlink:href="#icon-play"></use>
+                    </svg>
+                    <svg class="icon pause" aria-hidden="true">
+                        <use xlink:href="#icon-pause"></use>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="media">
+            <video src=""> </video>
+        </div>
+    </div>
+    <div class="song-info">
+        <h3 class="song-name">
+            <span class="name"></span>
+            <span class="dash"></span>
+            <span class="singer"></span>
+        </h3>
+        <div class="lyric-wrapper">
+            <div class="lyric-viewbox">
+                <ul class="lyric-list">
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="buttons-wrapper">
+        <a href="#" class="open">打 开</a>
+        <a href="#" class="download">下 载</a>
+    </div>
+</div>
+<script src="./vendors/jquery.min.js"></script>
+<script src="./vendors/av-min.js"></script>
+<script>
+    !function () {
+        var APP_ID = 'YQ4yjuFRLMM8TRf2w3pSr3QH-gzGzoHsz';
+        var APP_KEY = 'oBQKY2jc2MYHDcxLP3QoLxtL';
+        AV.init({appId: APP_ID, appKey: APP_KEY});
+    }()
+
+    let objectID = window.location.search.match(/^\?id=(.*)/)[1]
+    var query = new AV.Query('Song');
+    query.get(objectID).then(function (songInfo) {
+        var timeArray = []
+        let {songName,singer,mp3,cover,lyric} = songInfo.attributes
+        $('.song-name>.name').text(songName)
+        $('.song-name>.dash').text('-')
+        $('.song-name>.singer').text(singer)
+        $('.disc>.song-poster').css('background-image',`url(${cover})`)
+        $('.media>video').attr('src',mp3)
+        var lyricObject =window.JSON.parse(lyric)
+        var origin = lyricObject.lyric
+        var translation = lyricObject.translation
+        var ul = $('.lyric-list')
+        if (!origin){
+            var item =`
+                <li class="lyric-item">
+                    <span class="lyric-origin">暂无歌词</span>
+                    <span class="lyric-translation">&nbsp;</span>
+                </li>`
+            ul.append(item)
+            $('.lyric-viewbox').addClass('no-lyric')
+            return
+        }
+        var originSentences = origin.split('\n')
+        if(!translation){
+            originSentences.forEach(function(sentence){
+                if (!sentence){return}
+                var regex = /(?:\[)(\d\d):(\d+\.\d+)(?:\])(.*)/
+                var matches = sentence.match(regex)
+                if(matches){
+                    var minute = +matches[1]
+                    var seconds = +matches[2]
+                    var text = matches[3] || '&nbsp;'
+                }
+                var item =`
+                <li class="lyric-item">
+                    <span class="lyric-origin">${text}</span>
+                </li>`
+                ul.append(item)
+                timeArray.push(60*minute+seconds)
+            });
+            $('.media>video').on('timeupdate',function(e){
+                var currentTime = e.currentTarget.currentTime
+                $('.lyric-item').eq(0).addClass('turnWhite')
+                for(let i=0; i<timeArray.length; i++) {
+                    if (i === timeArray.length - 1) {
+                        $('.lyric-list').css('transform', `translateY(-${32 * i - 32}px)`)
+                        $('.lyric-item').eq(i - 1).removeClass('turnWhite')
+                    } else if (timeArray[i] <= currentTime && timeArray[i + 1] > currentTime) {
+                        $('.lyric-list').css('transform', `translateY(-${32 * i - 32}px)`)
+                        $('.lyric-item').eq(i - 1).removeClass('turnWhite')
+                        $('.lyric-item').eq(i).addClass('turnWhite')
+                        break;
+                    } else if (currentTime < timeArray[0]) {
+                        $('.lyric-list').css('transform', `translateY(-${32 * i - 32}px)`)
+                        $('.lyric-item').eq(i - 1).removeClass('turnWhite')
+                        $('.lyric-item').eq(i).addClass('turnWhite')
+                        break
+                    }
+                }
+            })
+            return
+        }
+        var translationSentences = translation.split('\n')
+        var translationObject = {}
+        translationSentences.forEach(function(sentence){
+            if(!sentence){return}
+            var regex = /(?:\[)(\d\d):(\d+\.\d+)(?:\])(.*)/
+            var translationMatches = sentence.match(regex)
+            var translationTime = (+translationMatches[1])*60 + (+translationMatches[2])
+            var translationText = translationMatches && translationMatches[3] || '&nbsp;'
+            translationObject[translationTime] = translationText
+        })
+        originSentences.forEach(function(sentence,index){
+            if (!sentence){return}
+            var regex = /(?:\[)(\d\d):(\d+\.\d+)(?:\])(.*)/
+            var originMatches = sentence.match(regex)
+            var originTime = (+originMatches[1])*60 + (+originMatches[2])
+            var originText = originMatches[3] || '&nbsp;'
+            var translationText = translationObject[originTime] || '&nbsp;'
+            var item =`
+                    <li class="lyric-item">
+                        <span class="lyric-origin">${originText}</span>
+                        <span class="lyric-translation">${translationText}</span>
+                    </li>`
+            ul.append(item)
+            $('.lyric-viewbox').addClass('with-translation')
+            timeArray.push(originTime)
+        });
+        $('.media>video').on('timeupdate',function(e){
+            var currentTime = e.currentTarget.currentTime
+            $('.lyric-item').eq(0).addClass('turnWhite')
+            for(let i=0; i<timeArray.length; i++){
+                if(i === timeArray.length - 1){
+                    $('.lyric-list').css('transform',`translateY(-${49*i}px)`)
+                    $('.lyric-item').eq(i-1).removeClass('turnWhite')
+                }else if(timeArray[i] <= currentTime && timeArray[i+1] > currentTime){
+                    $('.lyric-list').css('transform',`translateY(-${49*i}px)`)
+                    $('.lyric-item').eq(i-1).removeClass('turnWhite')
+                    $('.lyric-item').eq(i).addClass('turnWhite')
+                    break;
+                }else if(currentTime < timeArray[0]){
+                    $('.lyric-list').css('transform',`translateY(-${49*i}px)`)
+                    $('.lyric-item').eq(i-1).removeClass('turnWhite')
+                    $('.lyric-item').eq(i).addClass('turnWhite')
+                    break
+                }
+            }
+        })
+    }, function (error) {
+        console.log(error)
+    });
+
+    $('.media>video').on('canplay',function(e){
+        $('.disc>.song-poster>.control').addClass('canplay')
+    })
+    $('.media>video').on('ended',function(e){
+        $('.disc').removeClass('active')
+        $('.disc>.song-poster').css('animation','none')
+        $('.lyric-list').css('transform','translateY(0px)')
+        $('.lyric-item').eq(0).addClass('turnWhite')
+    })
+
+    $('.control').on('click',function(e){
+        $('.disc').toggleClass('active')
+        if($('.disc.active').length){
+            $('.media>video')[0].play()
+            $('.disc>.song-poster').css('animation','circle 20s linear infinite')
+
+        }else{
+            $('.media>video')[0].pause()
+            $('.disc>.song-poster').css('animation','circle 20s linear infinite paused')
+        }
+    })
+</script>
+</body>
+</html>
