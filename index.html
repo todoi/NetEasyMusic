@@ -125,11 +125,11 @@
                         <div class="hotSearch">
                             <h4>热门搜索</h4>
                             <div class="hotSearchValue">
-                                <a href="#" class="scaleBorder">那年花开月正圆</a>
-                                <a href="#" class="scaleBorder">BLACKPINK</a>
-                                <a href="#" class="scaleBorder">OUR TWENTY FOR (Japanese Ver.)</a>
-                                <a href="#" class="scaleBorder">Jony J</a>
-                                <a href="#" class="scaleBorder">What Are Words</a>
+                                <a href="#" class="scaleBorder">魔鬼中的天使</a>
+                                <a href="#" class="scaleBorder">I Am You</a>
+                                <a href="#" class="scaleBorder">Your Love Shot Me Down</a>
+                                <a href="#" class="scaleBorder">Jumpshot</a>
+                                <a href="#" class="scaleBorder">The truth that you leave</a>
                             </div>
                         </div>
                         <div class="history">
@@ -347,6 +347,27 @@
 
         $close.click()
 
+    })
+    //监听热门搜索标签的click
+    console.log($('.hotSearch>a'));
+    $('.hotSearchValue>a').on('click',function(e){
+        e.preventDefault()
+        console.log(1)
+        let $element = $(e.currentTarget)
+        let text = $element.text()
+        $('#searchInput').val(text)
+        $('#searchInput').change()
+
+        var $textHolder = $('.textInput>.textHolder')
+        var $empty = $('.textInput>.empty')
+        $textHolder.text('')
+        //输入字符就让清空按钮出现
+        $empty.addClass('active')
+
+        var keyDownEvent = jQuery.Event("keypress");
+        // # Some key code value
+        keyDownEvent.which = 13;
+        $('#searchInput').trigger(keyDownEvent);
     })
 
     //监听 X 图标
