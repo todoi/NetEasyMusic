@@ -38,7 +38,6 @@
                     <div class="recoPlaylists">
                         <a href="#" class="recoPlaylist">
                             <div class="poster">
-                                <img>
                                 <span class="count"></span>
                                 <i class=""></i>
                             </div>
@@ -46,7 +45,6 @@
                         </a>
                         <a href="#" class="recoPlaylist">
                             <div class="poster">
-                                <img>
                                 <span class="count"></span>
                                 <i class=""></i>
                             </div>
@@ -54,7 +52,6 @@
                         </a>
                         <a href="#" class="recoPlaylist">
                             <div class="poster">
-                                <img>
                                 <span class="count"></span>
                                 <i class=""></i>
                             </div>
@@ -62,7 +59,6 @@
                         </a>
                         <a href="#" class="recoPlaylist">
                             <div class="poster">
-                                <img>
                                 <span class="count"></span>
                                 <i class=""></i>
                             </div>
@@ -70,7 +66,6 @@
                         </a>
                         <a href="#" class="recoPlaylist">
                             <div class="poster">
-                                <img>
                                 <span class="count"></span>
                                 <i class=""></i>
                             </div>
@@ -78,7 +73,6 @@
                         </a>
                         <a href="#" class="recoPlaylist">
                             <div class="poster">
-                                <img>
                                 <span class="count"></span>
                                 <i class=""></i>
                             </div>
@@ -349,7 +343,6 @@
 
     })
     //监听热门搜索标签的click
-    console.log($('.hotSearch>a'));
     $('.hotSearchValue>a').on('click',function(e){
         e.preventDefault()
         console.log(1)
@@ -386,12 +379,13 @@
             let {attributes, id} = list
             let {title, poster, count, champion} = attributes
             let $element = $($recoPlaylist[index])
-            let $img = $element.find('.poster>img')
+            let img = new Image()
+            img.src = poster
             let $count = $element.find('.count')
-            let $champion = $element.find('.champion')
+            let $champion = $element.find('.poster>i')
+            $(img).insertBefore($count)
             let $title = $element.find('p')
-            $element.attr({'href': `/playlist?id=?${id}`, 'alt': title})
-            $img.attr('src', poster)
+            $element.attr({'href': `/playlist.html?id=${id}`, 'alt': title})
             $count.text(count)
             champion === "true" && $champion.addClass('champion')
             $title.text(title)
@@ -499,14 +493,14 @@
             if (writeOrder) {
                 let order = index + 1
                 order = order < 10 ? '0' + order : order + ''
-                newHtml = newHtml.replace(/{{order}}/g, order)
+                newHtml = newHtml.replace(/\{\{order}}/g, order)
             }
-            newHtml = newHtml.replace(/{{songName}}/g, songName)
-                .replace(/{{quote}}/g, quote)
-                .replace(/{{singer}}/g, singer)
-                .replace(/{{album}}/g, album)
-                .replace(/{{sq}}/g, sq)
-                .replace(/{{id}}/g, id);
+            newHtml = newHtml.replace(/\{\{songName}}/g, songName)
+                .replace(/\{\{quote}}/g, quote)
+                .replace(/\{\{singer}}/g, singer)
+                .replace(/\{\{album}}/g, album)
+                .replace(/\{\{sq}}/g, sq)
+                .replace(/\{\{id}}/g, id);
             $parentElement.append(newHtml)
         })
     }

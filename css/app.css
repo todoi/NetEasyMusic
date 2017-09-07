@@ -61,7 +61,9 @@ main::before{content:'';display:block;height:40px;}
     display:block;top:0;left:0;}
 .recoPlaylists-container>.recoPlaylists .poster>span{position: absolute;top:5px;right:5px;color:white;
     font-size:12px;line-height:12px;padding-left:13px;background:url("../images/headset.svg") 0 0/ 12px no-repeat;}
-.recoPlaylists-container>.recoPlaylists .poster>.champion{position:absolute;left:0;top:0;height:20px;width:20px;background:url("../images/champion.svg")}
+.recoPlaylists-container>.recoPlaylists .poster>.champion{position:absolute;left:0;top:0;height:20px;width:20px;background:url("../images/champion.svg");}
+.recoPlaylists-container>.recoPlaylists .poster::before{content:'';position:absolute;left:0;top:0;height:20px;width:100%;
+    background:linear-gradient(180deg,rgba(0,0,0,.2),transparent);}
 /*最新音乐*/
 .latestMusic-container{padding-top:25px;}
 /*网易云音乐广告*/

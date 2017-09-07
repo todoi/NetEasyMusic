@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="//s1.music.126.net/music.ico?v1">
+    <link rel="stylesheet" type="text/css" href="./css/common.css">
+    <link rel="stylesheet" href="./css/playlist.css">
+    <script src="//at.alicdn.com/t/font_398797_agj89kayh9f6r.js"></script>
+</head>
+<body>
+<div class="page">
+    <header>
+        <div class="header-background"></div>
+        <div class="header-inner">
+            <div class="poster">
+                <span class="count"></span>
+                <i>歌单</i>
+            </div>
+            <div class="title-wrapper">
+                <h2 class="title"></h2>
+                <a href="#" class="author-link">
+                    <span class="avatar"></span>
+                    <span class="author">-武姜儿-</span>
+                </a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="information">
+            <div class="tags">
+                <span>标签：</span>
+                <span class="tag-item scaleBorder">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <span class="tag-item scaleBorder">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <span class="tag-item scaleBorder">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            </div>
+            <div class="description">
+                <div class="text-wrapper">
+                </div>
+                <span class="arrow"></span>
+            </div>
+        </div>
+        <div class="playlist-wrapper">
+            <h3 class="title">歌曲列表</h3>
+            <div class="songList">
+            </div>
+            <div class="no-more">已经到达列表底部</div>
+        </div>
+    </main>
+    <footer>
+        <div class="button-wrapper scaleBorder">
+            <a href="http://m.music.163.com/m/applink/?scheme=orpheus%3A%2F%2Fplaylist%2F882960422&dl=https%3A%2F%2Fitunes.apple.com%2Fapp%2Fid590338362" class="button">收藏歌单</a>
+        </div>
+    </footer>
+</div>
+
+<script src="./vendors/jquery.min.js"></script>
+<script src="./vendors/av-min.js"></script>
+<script>
+    !function () {
+        var APP_ID = 'YQ4yjuFRLMM8TRf2w3pSr3QH-gzGzoHsz';
+        var APP_KEY = 'oBQKY2jc2MYHDcxLP3QoLxtL';
+        AV.init({appId: APP_ID, appKey: APP_KEY});
+    }()
+    let objectID = window.location.search.match(/(?:^\?id=)(.*)/)[1]
+    var query = new AV.Query('RecommendPlaylist');
+    query.get(objectID).then(function (playlist) {
+        let {author,avatar,poster,count,content,description,link,tag,title} = playlist.attributes
+        $('head').append(`<title>${title} - 网易云音乐</title>`)
+        $('header').find('.header-background').css('backgroundImage',`url(${poster})`).end()
+            .find('.poster').css('backgroundImage',`url(${poster})`)
+            .find('.count').text(count).end().end()
+            .find('.title-wrapper')
+            .find('.title').text(title).end()
+            .find('.author-link').attr('href',link)
+            .find('.avatar').css('backgroundImage',`url(${avatar})`).end()
+            .find('.author').text(author)
+        window.JSON.parse(tag).forEach(function(tagItem,index){
+            $('.tags>.tag-item')[index].innerText = tagItem
+        })
+        let textList = window.JSON.parse(description)
+        textList.forEach(function(text){
+            let html = `<span class="text">${text}</span>`
+            $('.description>.text-wrapper').append(html)
+        })
+    },function(error){console.log(error)})
+
+    $('.description>.arrow').on('click',function(e){
+        $('.description>.text-wrapper').toggleClass('active')
+    })
+
+    !function () {
+        let playlist = getPlaylist(objectID)
+        let html =createHtmlPattern(true)
+        let args = {playlist: playlist, html: html, selector: '.songList', callback: writeSong, writeOrder: true}
+        getSongInfo(args)
+    }()
+
+    function getPlaylist(objectId) {
+        let playlist = new AV.Query('RecommendPlaylist')
+        let promise
+        promise = playlist.get(objectId).then(function (song) {
+            let content = song.attributes.content
+            let contentArr
+            contentArr = window.JSON.parse(content)
+            return contentArr
+        }, function (error) {
+            console.log(error)
+        })
+        return promise
+    }
+    function createHtmlPattern(writeOrder){
+        let html
+        if (writeOrder){
+            html = `
+                    <a href="/song.html?id={{id}}" class="scaleBorder songInfo-container">
+                        <div class="order">{{order}}</div>
+                        <div class="songInfo">
+                            <h3 class="songName">{{songName}} <span>{{quote}}</span></h3>
+                            <p class="singerAlbum">
+                                <svg class="icon {{sq}}" aria-hidden="true">
+                                    <use xlink:href="#icon-sq"></use>
+                                </svg>
+                                <span class="singer">{{singer}}{{album}}</span>
+                            </p>
+                        </div>
+                        <div class="playButton">
+                            <svg class="icon" aria-hidden="false">
+                                <use xlink:href="#icon-play"></use>
+                            </svg>
+                        </div>
+                        </a> `
+        }else{
+            html = `<a href="/song.html?id={{id}}" class="scaleBorder songInfo-container">
+                        <div class="songInfo">
+                            <h3 class="songName">{{songName}} <span>{{quote}}</span></h3>
+                            <p class="singerAlbum">
+                                <svg class="icon {{sq}}" aria-hidden="true">
+                                    <use xlink:href="#icon-sq"></use>
+                                </svg>
+                                <span class="singer">{{singer}}{{album}}</span>
+                            </p>
+                        </div>
+                        <div class="playButton">
+                            <svg class="icon" aria-hidden="false">
+                                <use xlink:href="#icon-play"></use>
+                            </svg>
+                        </div>
+                    </a> `
+        }
+        return html
+    }
+    function getSongInfo(args) {
+        let {playlist, selector, html, callback, writeOrder} = args
+        let orderArray = []
+        let countIndex = []
+        playlist.then(function (list) {
+            let listLength = list.length
+            list.forEach(function (songId, index) {
+                let song = new AV.Query('Song');
+                song.startsWith('songId', songId + '').find().then(function (array) {
+                    //array 有可能返回空数组
+                    if (array.length) {
+                        let {attributes:songInfo, id} = array[0]
+                        songInfo.id = id
+                        orderArray[index] = songInfo
+                    }
+                    countIndex.push(1)
+                    countIndex.length === listLength && callback(orderArray, selector, html, writeOrder)
+                }, function (error) {
+                    console.log(error);
+                    orderArray[index] = null;
+                    countIndex.push(1)
+                    countIndex.length === listLength && callback(orderArray, selector, html, writeOrder)
+                })
+            })
+        }, function (error) {
+            console.log(error)
+        })
+    }
+    function writeSong(orderArray, selector, html, writeOrder) {
+        let $parentElement = $(selector)
+        orderArray.forEach(function (songInfo, index) {
+            let {songName, singer, album, sq, id} = songInfo
+            let newHtml = html;
+            let quote = ''
+            if (songName.match(/\(.*\)/)) {
+                quote = songName.match(/\(.*\)/)[0]
+                songName = songName.replace(/\(.*\)/, '')
+            }
+            if (writeOrder) {
+                let order = index + 1
+//                order = order < 10 ? '0' + order : order + ''
+                newHtml = newHtml.replace(/\{\{order}}/g, order)
+            }
+            newHtml = newHtml.replace(/\{\{songName}}/g, songName)
+                .replace(/\{\{quote}}/g, quote)
+                .replace(/\{\{singer}}/g, singer)
+                .replace(/\{\{album}}/g, album)
+                .replace(/\{\{sq}}/g, sq)
+                .replace(/\{\{id}}/g, id);
+            $parentElement.append(newHtml)
+        })
+    }
+</script>
+</body>
+</html>

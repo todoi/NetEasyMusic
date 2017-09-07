@@ -5,7 +5,6 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
     <link rel="shortcut icon" href="//s1.music.126.net/music.ico?v1">
     <link rel="stylesheet" href="./css/common.css">
     <link rel="stylesheet" href="./css/song.css">
@@ -46,8 +45,8 @@
         </div>
     </div>
     <div class="buttons-wrapper">
-        <a href="#" class="open">打 开</a>
-        <a href="#" class="download">下 载</a>
+        <a href="http://m.music.163.com/m/applink/?scheme=orpheus%3A%2F%2Fsong%2F143474&dl=https%3A%2F%2Fitunes.apple.com%2Fapp%2Fid590338362" class="open">打 开</a>
+        <a href="http://music.163.com/m/" class="download">下 载</a>
     </div>
 </div>
 <script src="./vendors/jquery.min.js"></script>
@@ -65,6 +64,7 @@
     query.get(objectID).then(function (songInfo) {
         var timeArray = []
         let {songName,singer,mp3,cover,lyric} = songInfo.attributes
+        $('head').append(`<title>${songName}-${singer}-在线试听-网易云音乐</title>`)
         $('.song-name>.name').text(songName)
         $('.song-name>.dash').text('-')
         $('.song-name>.singer').text(singer)
