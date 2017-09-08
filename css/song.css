@@ -59,7 +59,7 @@
 /*按钮*/
 .buttons-wrapper{position:absolute;bottom:20px;width:100%;left:0;text-align:center;}
 @media(max-height:600px){
-   .buttons-wrapper{position:relative;padding-top:50px;width:100%;left:0;text-align:center;}
+   .buttons-wrapper{position:relative;padding-top:10px;width:100%;left:0;bottom:10px;text-align:center;}
 }
 .buttons-wrapper>a{display:inline-block;color:#d43b32;line-height:40px; font-size:18px;border:1px solid;padding:0 12.8%;border-radius:4px;}
 .buttons-wrapper>.open{color:#d43b32;}

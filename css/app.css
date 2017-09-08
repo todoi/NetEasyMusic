@@ -70,7 +70,7 @@ main::before{content:'';display:block;height:40px;}
 .art-container{padding-top:53.3%;margin-top:4px;background:url("../images/artBackground.png") center/contain no-repeat;position:relative;}
 .art-container>.art{position:absolute;top:31.7065%;left:0;width:100%;text-align:center;}
 .art-container>.art>.artSvg{width:230px;vertical-align:top;}
-.art-container>.art>.openAPP{display:block;color:#d43c33;border:1px solid;font-size:16px;margin:15px 37px 4px;padding:11px;
+.art-container>.art>.openAPP{display:block;color:#d43c33;border:1px solid;font-size:16px;margin:15px 37px 4px;padding:11px 0;
     line-height:1;border-radius:38px;}
 .art-container>.art>.copyright{display:block;font-size:12px;color:#888;transform: scale(.75);}
 @media screen and (max-width: 374px){ .art-container>.art{top:22.3088%;} }
@@ -134,3 +134,5 @@ main::before{content:'';display:block;height:40px;}
 .pageSearch>ul.showSearch .searchList>.prompt,.allResult>.prompt{text-align:center;margin-right:10px;color:#333;padding: 20px 0;}
 .pageSearch>ul.showSearch>li.active{display:block;}
 
+.recoPlaylists-container.loading>.recoPlaylists{display:none;}
+.pageHotList.loading>.loadAll{display:none;}
