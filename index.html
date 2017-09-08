@@ -33,7 +33,7 @@
         <ul class="tabContent">
             <li class="pageRecolist active">
                 <!--推荐歌单-->
-                <div class="recoPlaylists-container">
+                <div class="recoPlaylists-container loading">
                     <h2 class="title">推荐歌单</h2>
                     <div class="recoPlaylists">
                         <a href="#" class="recoPlaylist">
@@ -83,7 +83,7 @@
                 <!--最新音乐-->
                 <div class="latestMusic-container">
                     <h2 class="title">最新音乐</h2>
-                    <div class="latestMusic">
+                    <div class="latestMusic loading">
                     </div>
                 </div>
                 <!--网易云音乐广告-->
@@ -96,7 +96,7 @@
                 </div>
             </li>
             <!--热歌榜-->
-            <li class="pageHotList">
+            <li class="pageHotList loading">
                 <div class="banner">
                     <div class="titleIcon"></div>
                     <span class="updateTime">更新日期：08月24日</span>
@@ -137,22 +137,6 @@
                         </div>
                     </li>
                     <li class="allResult">
-                        <a href="#" class="scaleBorder songInfo-container">
-                            <div class="songInfo">
-                                <h3 class="songName">你是我最愚蠢的一次浪漫</h3>
-                                <p class="singerAlbum">
-                                    <svg class="icon" aria-hidden="true">
-                                        <use xlink:href="#icon-sq"></use>
-                                    </svg>
-                                    <span class="singer">房东的猫 - 你是我最愚蠢的一次浪漫</span>
-                                </p>
-                            </div>
-                            <div class="playButton">
-                                <svg class="icon" aria-hidden="false">
-                                    <use xlink:href="#icon-play"></use>
-                                </svg>
-                            </div>
-                        </a>
                     </li>
                 </ul>
             </li>
@@ -190,7 +174,7 @@
 
     //查找搜索结果并写入
     function queryAndWrite(query,html,parentSelector,prompt){
-        query.find().then(function (result) {
+        return query.find().then(function (result) {
             if (result.length) {
                 let orderArr = []
                 result.forEach((songObject)=>{
@@ -213,7 +197,7 @@
         var $empty = $('.textInput>.empty')
         var text = $element[0].value
         //切换热门搜索页面和搜索结果页面
-        text ? toggleSearchTab('.showSearch>.nameResult') : toggleSearchTab('.showSearch>.recommendSearch')
+        text ? toggleSearchTab('.showSearch>.nameResult') : toggleSearchTab('.showSearch>.recoSearch')
         //toggle text holder
         text ? $textHolder.text('') : $textHolder.text('搜索歌曲、歌手、专辑')
         //输入字符就让清空按钮出现
@@ -268,6 +252,7 @@
         var key = e.which || e.keyCode;
         // 13 is enter
         if (key === 13) {
+            $('.allResult').addClass('loading')
             toggleSearchTab('.showSearch>.allResult')
 
             //query songname or singer or album
@@ -279,7 +264,10 @@
             let html = createHtmlPattern()
             let parentSelector ='.allResult'
             let prompt = '暂无搜索结果'
-            queryAndWrite(query,html,parentSelector,prompt)
+            queryAndWrite(query,html,parentSelector,prompt).then(
+                function(){ $('.allResult').removeClass('loading')},
+                function(){ $('.allResult').removeClass('loading')}
+            )
 
             let historyHtml = `
                 <li class="searchItem">
@@ -393,7 +381,7 @@
     }).then(function (lists) { /* 更新成功*/
     }, function (error) { /* 异常处理*/
         console.log(error)
-    });
+    }).then(function(){$('.recoPlaylists-container').removeClass('loading')});
 
     //create songList pattern html
     function createHtmlPattern(writeOrder){
@@ -456,11 +444,12 @@
         let {playlist, selector, html, callback, writeOrder} = args
         let orderArray = []
         let countIndex = []
-        playlist.then(function (list) {
+        let promiseAll = []
+        return playlist.then(function (list) {
             let listLength = list.length
             list.forEach(function (songId, index) {
                 let song = new AV.Query('Song');
-                song.startsWith('songId', songId + '').find().then(function (array) {
+                let promise = song.startsWith('songId', songId + '').find().then(function (array) {
                     //array 有可能返回空数组
                     if (array.length) {
                         let {attributes:songInfo, id} = array[0]
@@ -475,7 +464,9 @@
                     countIndex.push(1)
                     countIndex.length === listLength && callback(orderArray, selector, html, writeOrder)
                 })
+                promiseAll.push(promise)
             })
+            return Promise.all(promiseAll)
         }, function (error) {
             console.log(error)
         })
@@ -510,14 +501,16 @@
         let playlist = getPlaylist('59a8f8d8570c35006b1cb153')
         let html = createHtmlPattern()
         let args = {playlist: playlist, html: html, selector: '.latestMusic', callback: writeSong}
-        getSongInfo(args)
+        getSongInfo(args).then(function(){$('.latestMusic').removeClass('loading')},
+            function(){$('.latestMusic').removeClass('loading')})
     }()
     //热歌榜列表载入
     !function () {
         let playlist = getPlaylist('59a8f8e01b69e60064127cb7')
         let html =createHtmlPattern(true)
         let args = {playlist: playlist, html: html, selector: '.songList', callback: writeSong, writeOrder: true}
-        getSongInfo(args)
+        getSongInfo(args).then(function(){$('.pageHotList').removeClass('loading')},
+            function(){$('.pageHotList').removeClass('loading')})
     }()
 
 </script>
