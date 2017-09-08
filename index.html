@@ -31,7 +31,7 @@
         </ul>
         <!--tab content-->
         <ul class="tabContent">
-            <li class="pageRecommendList active">
+            <li class="pageRecolist active">
                 <!--推荐歌单-->
                 <div class="recoPlaylists-container">
                     <h2 class="title">推荐歌单</h2>
@@ -115,7 +115,7 @@
                     </div>
                 </div>
                 <ul class="showSearch">
-                    <li class="recommendSearch active">
+                    <li class="recoSearch active">
                         <div class="hotSearch">
                             <h4>热门搜索</h4>
                             <div class="hotSearchValue">
@@ -234,7 +234,7 @@
                 var songNameQuery = new AV.Query('Song');
                 songNameQuery.contains('songName', text);
                 let html = `
-                    <a href="/song.html?id={{id}}" class="searchItem">
+                    <a href="./song.html?id={{id}}" class="searchItem">
                         <i class="searchIcon"></i>
                         <div class="value-container scaleBorder">
                             <div class="value">{{songName}}</div>
@@ -254,7 +254,7 @@
         $('#searchInput')[0].value = null
         $textHolder.text('搜索歌曲、歌手、专辑')
         $empty.removeClass('active')
-        toggleSearchTab('.showSearch>.recommendSearch')
+        toggleSearchTab('.showSearch>.recoSearch')
 
         //清空搜索字符
         $('.nameResult>h4.scaleBorder>span').text('')
@@ -385,7 +385,7 @@
             let $champion = $element.find('.poster>i')
             $(img).insertBefore($count)
             let $title = $element.find('p')
-            $element.attr({'href': `/playlist.html?id=${id}`, 'alt': title})
+            $element.attr({'href': `./playlist.html?id=${id}`, 'alt': title})
             $count.text(count)
             champion === "true" && $champion.addClass('champion')
             $title.text(title)
@@ -400,7 +400,7 @@
         let html
         if (writeOrder){
             html = `
-                    <a href="/song.html?id={{id}}" class="scaleBorder songInfo-container">
+                    <a href="./song.html?id={{id}}" class="scaleBorder songInfo-container">
                         <div class="order">{{order}}</div>
                         <div class="songInfo">
                             <h3 class="songName">{{songName}} <span>{{quote}}</span></h3>
@@ -418,7 +418,7 @@
                         </div>
                         </a> `
         }else{
-            html = `<a href="/song.html?id={{id}}" class="scaleBorder songInfo-container">
+            html = `<a href="./song.html?id={{id}}" class="scaleBorder songInfo-container">
                         <div class="songInfo">
                             <h3 class="songName">{{songName}} <span>{{quote}}</span></h3>
                             <p class="singerAlbum">
