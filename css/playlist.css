@@ -20,7 +20,7 @@
 .pageHotList>.songList>.songInfo-container::after{left:28px;}
 .pageHotList>.songList>.songInfo-container:nth-child(-n+3)>.order{color:#d43c33;}
 
-.page{background:#f8f8f8;}
+.page{background:#f8f8f8;overflow:hidden;}
 /*header*/
 header{position:relative;padding:30px 10px 30px 15px;overflow:hidden;z-index:0;}
 header>.header-background{content:'';position:absolute;top:0;left:0;right:0;bottom:0;filter:blur(20px);transform:scale(1.5);
