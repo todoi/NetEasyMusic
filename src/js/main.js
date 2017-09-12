@@ -1,10 +1,10 @@
 
 //init leanClound
-!function () {
+(function () {
     var APP_ID = 'YQ4yjuFRLMM8TRf2w3pSr3QH-gzGzoHsz';
     var APP_KEY = 'oBQKY2jc2MYHDcxLP3QoLxtL';
     AV.init({appId: APP_ID, appKey: APP_KEY});
-}()
+})()
 
 //tab切换 推荐歌单 | 热榜 | 搜索
 $('.tabNav>li').on('click', function (e) {
@@ -19,19 +19,19 @@ $('.tabNav>li').on('click', function (e) {
 })
 
 //搜索页面的tab切换 recommendSearch | nameResult | allResult
-function toggleSearchTab(activeTabSelector){
+function toggleSearchTab (activeTabSelector){
     $('.showSearch>li').removeClass('active')
     $(activeTabSelector).addClass('active')
 }
 
 //查找搜索结果并写入
-function queryAndWrite(query,html,parentSelector,prompt){
+function queryAndWrite (query,html,parentSelector,prompt){
     return query.find().then(function (result) {
         if (result.length) {
             let orderArr = []
             result.forEach((songObject)=>{
-                let songInfo=songObject.attributes
-                songInfo.id=songObject.id
+                let songInfo = songObject.attributes
+                songInfo.id = songObject.id
                 orderArr.push(songInfo)
             })
             writeSong(orderArr, parentSelector, html)
@@ -39,7 +39,7 @@ function queryAndWrite(query,html,parentSelector,prompt){
             let html = `<div class="prompt">${prompt}<div>`
             $(parentSelector).html(html)
         }
-    },function(error){ console.log(error) })
+    },function (error){ console.log(error) })
 }
 
 //搜索框输入
@@ -64,7 +64,7 @@ $('#searchInput').on('input', function (e) {
     var $element = $(e.currentTarget)
     var text = $element[0].value
     if(clock){ window.clearTimeout(clock) }
-    clock = setTimeout(function(){
+    clock = setTimeout(function (){
         $('.nameResult>.searchList').html('')
         if (text.trim()) {
             var songNameQuery = new AV.Query('Song');
@@ -114,11 +114,11 @@ $('#searchInput').on('keypress', function (e) {
         var query = AV.Query.or(songNameQuery, singerQuery, albumQuery);
 
         let html = createHtmlPattern()
-        let parentSelector ='.allResult'
+        let parentSelector = '.allResult'
         let prompt = '暂无搜索结果'
         queryAndWrite(query,html,parentSelector,prompt).then(
-            function(){ $('.allResult').removeClass('loading')},
-            function(){ $('.allResult').removeClass('loading')}
+            function (){ $('.allResult').removeClass('loading')},
+            function (){ $('.allResult').removeClass('loading')}
         )
 
         let historyHtml = `
@@ -146,7 +146,7 @@ $('#searchInput').on('keypress', function (e) {
  * @param queryClass 属性所属的类,默认为Song
  * @returns {*|AV.Query|Query}
  */
-function queryWhat(queryAttribute,text,queryClass){
+function queryWhat (queryAttribute,text,queryClass){
     queryClass = queryClass || 'Song'
     var songNameQuery = new AV.Query(queryClass);
     return songNameQuery.contains(queryAttribute, text);
@@ -161,7 +161,7 @@ $('.nameResult>.searchList').on('click', '.searchItem', function (e) {
 })
 
 //监听历史记录的click
-$('.history>.searchList').on('click','.searchItem',function(e){
+$('.history>.searchList').on('click','.searchItem',function (e){
     let $element = $(e.currentTarget)
     let $close = $element.find('.close')
     let text = $element.find('.value').text()
@@ -174,16 +174,16 @@ $('.history>.searchList').on('click','.searchItem',function(e){
     //输入字符就让清空按钮出现
     $empty.addClass('active')
 
-    var keyDownEvent = jQuery.Event("keypress");
+    var keyDownEvent = jQuery.Event('keypress');
     // # Some key code value
     keyDownEvent.which = 13;
     $('#searchInput').trigger(keyDownEvent);
 
     $close.click()
-
-})
+    }
+)
 //监听热门搜索标签的click
-$('.hotSearchValue>a').on('click',function(e){
+$('.hotSearchValue>a').on('click',function (e){
     e.preventDefault()
     console.log(1)
     let $element = $(e.currentTarget)
@@ -197,24 +197,25 @@ $('.hotSearchValue>a').on('click',function(e){
     //输入字符就让清空按钮出现
     $empty.addClass('active')
 
-    var keyDownEvent = jQuery.Event("keypress");
+    var keyDownEvent = jQuery.Event('keypress');
     // # Some key code value
     keyDownEvent.which = 13;
     $('#searchInput').trigger(keyDownEvent);
 })
 
 //监听 X 图标
-$('.history>.searchList').on('click','.value-container>.close',function(e){
+$('.history>.searchList').on('click','.value-container>.close',function (e){
     e.stopPropagation()
-    $element = $(e.target)
-    $li = $element.closest('.history>.searchList>.searchItem')
+    var $element = $(e.target)
+    var $li = $element.closest('.history>.searchList>.searchItem')
     $li.remove()
 })
 
 //推荐歌单写入
 let $recoPlaylist = $('.recoPlaylist')
 var recommendPlaylist = new AV.Query('RecommendPlaylist');
-recommendPlaylist.find().then(function (lists) { lists = lists.slice(0, 6)
+recommendPlaylist.find().then(function (lists) {
+    lists = lists.slice(0, 6)
     lists.forEach(function (list, index) {
         let {attributes, id} = list
         let {title, poster, count, champion} = attributes
@@ -227,16 +228,16 @@ recommendPlaylist.find().then(function (lists) { lists = lists.slice(0, 6)
         let $title = $element.find('p')
         $element.attr({'href': `./playlist.html?id=${id}`, 'alt': title})
         $count.text(count)
-        champion === "true" && $champion.addClass('champion')
+        champion === 'true' && $champion.addClass('champion')
         $title.text(title)
     });
 }).then(function (lists) { /* 更新成功*/
 }, function (error) { /* 异常处理*/
     console.log(error)
-}).then(function(){$('.recoPlaylists-container').removeClass('loading')});
+}).then(function (){$('.recoPlaylists-container').removeClass('loading')});
 
 //create songList pattern html
-function createHtmlPattern(writeOrder){
+function createHtmlPattern (writeOrder){
     let html
     if (writeOrder){
         html = `
@@ -279,7 +280,7 @@ function createHtmlPattern(writeOrder){
 }
 
 //音乐列表载入函数
-function getPlaylist(objectId) {
+function getPlaylist (objectId){
     let playlist = new AV.Query('Playlist')
     let promise
     promise = playlist.get(objectId).then(function (song) {
@@ -292,7 +293,7 @@ function getPlaylist(objectId) {
     })
     return promise
 }
-function getSongInfo(args) {
+function getSongInfo (args){
     let {playlist, selector, html, callback, writeOrder} = args
     let orderArray = []
     let countIndex = []
@@ -304,7 +305,7 @@ function getSongInfo(args) {
             let promise = song.startsWith('songId', songId + '').find().then(function (array) {
                 //array 有可能返回空数组
                 if (array.length) {
-                    let {attributes:songInfo, id} = array[0]
+                    let {attributes : songInfo, id} = array[0]
                     songInfo.id = id
                     orderArray[index] = songInfo
                 }
@@ -323,7 +324,7 @@ function getSongInfo(args) {
         console.log(error)
     })
 }
-function writeSong(orderArray, selector, html, writeOrder) {
+function writeSong (orderArray, selector, html, writeOrder){
     let $parentElement = $(selector)
     orderArray.forEach(function (songInfo, index) {
         let {songName, singer, album, sq, id} = songInfo
@@ -349,18 +350,19 @@ function writeSong(orderArray, selector, html, writeOrder) {
 }
 
 //最新音乐载入
-!function () {
+(function () {
     let playlist = getPlaylist('59a8f8d8570c35006b1cb153')
     let html = createHtmlPattern()
     let args = {playlist: playlist, html: html, selector: '.latestMusic', callback: writeSong}
     getSongInfo(args).then(function(){$('.latestMusic').removeClass('loading')},
-        function(){$('.latestMusic').removeClass('loading')})
-}()
+        function (){$('.latestMusic').removeClass('loading')})
+}) ();
 //热歌榜列表载入
-!function () {
+
+(function () {
     let playlist = getPlaylist('59a8f8e01b69e60064127cb7')
-    let html =createHtmlPattern(true)
+    let html = createHtmlPattern(true)
     let args = {playlist: playlist, html: html, selector: '.songList', callback: writeSong, writeOrder: true}
     getSongInfo(args).then(function(){$('.pageHotList').removeClass('loading')},
         function(){$('.pageHotList').removeClass('loading')})
-}()
+}) ()
