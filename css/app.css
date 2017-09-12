@@ -1,9 +1,5 @@
 /*red:#d43c33*/
 /*grey:#888*/
-@media screen and (min-width:769px){
-    body{overflow:scroll;}
-    .page{width:768px;margin:5px auto 0;transform:translate(0);border:1px solid #ddd;box-shadow:0 1px 10px rgba(0,0,0,.5);}
-}
 .icon{ width: 1em; height: 1em; vertical-align: -0.15em; fill: currentColor; overflow: visible; }
 h2.title{font-size:17px; line-height: 17px;position:relative;padding-left:9px;vertical-align:middle;margin-bottom:16px;}
 h2.title::before{content:'';position:absolute;width:2px;height:calc(100% - 1px);top:0;left:0;background-color:#d43c33;}
