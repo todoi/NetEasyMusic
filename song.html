@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="media">
-            <video src=""> </video>
+            <audio src=""></audio>
         </div>
     </div>
     <div class="song-info">
@@ -69,7 +69,7 @@
         $('.song-name>.dash').text('-')
         $('.song-name>.singer').text(singer)
         $('.disc>.song-poster').css('background-image',`url(${cover})`)
-        $('.media>video').attr('src',mp3)
+        $('.media>audio').attr('src',mp3)
         var lyricObject =window.JSON.parse(lyric)
         var origin = lyricObject.lyric
         var translation = lyricObject.translation
@@ -104,7 +104,7 @@
                 ul.append(item)
                 timeArray.push(60*minute+seconds)
             });
-            $('.media>video').on('timeupdate',function(e){
+            $('.media>audio').on('timeupdate',function(e){
                 var currentTime = e.currentTarget.currentTime
                 $('.lyric-item').eq(0).addClass('turnWhite')
                 for(let i=0; i<timeArray.length; i++) {
@@ -153,7 +153,7 @@
             $('.lyric-viewbox').addClass('with-translation')
             timeArray.push(originTime)
         });
-        $('.media>video').on('timeupdate',function(e){
+        $('.media>audio').on('timeupdate',function(e){
             var currentTime = e.currentTarget.currentTime
             $('.lyric-item').eq(0).addClass('turnWhite')
             for(let i=0; i<timeArray.length; i++){
@@ -177,10 +177,10 @@
         console.log(error)
     });
 
-    $('.media>video').on('canplay',function(e){
+    $('.media>audio').on('canplay',function(e){
         $('.disc>.song-poster>.control').addClass('canplay')
     })
-    $('.media>video').on('ended',function(e){
+    $('.media>audio').on('ended',function(e){
         $('.disc').removeClass('active')
         $('.disc>.song-poster').css('animation','none')
         $('.lyric-list').css('transform','translateY(0px)')
@@ -190,11 +190,11 @@
     $('.control').on('click',function(e){
         $('.disc').toggleClass('active')
         if($('.disc.active').length){
-            $('.media>video')[0].play()
+            $('.media>audio')[0].play()
             $('.disc>.song-poster').css('animation','circle 20s linear infinite')
 
         }else{
-            $('.media>video')[0].pause()
+            $('.media>audio')[0].pause()
             $('.disc>.song-poster').css('animation','circle 20s linear infinite paused')
         }
     })

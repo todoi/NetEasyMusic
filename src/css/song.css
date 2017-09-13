@@ -35,7 +35,7 @@
 .player-wrapper>.disc.active .control>.play{display:none;}
 .player-wrapper>.disc.active .control>.pause{display:block;margin-top:-1px;margin-left:-1px;}
 /*video*/
-.player-wrapper>.media>video{display:none;}
+.player-wrapper>.media>audio{display:none;}
 
 /*歌词*/
 .song-info{margin-top:25px;padding:0 35px;text-align:center;}
