@@ -12,6 +12,7 @@
 </head>
 <body>
 <div class="page">
+    <div class="background"></div>
     <div class="player-wrapper">
         <div class="needle"></div>
         <div class="disc">
@@ -64,6 +65,7 @@
     query.get(objectID).then(function (songInfo) {
         var timeArray = []
         let {songName,singer,mp3,cover,lyric} = songInfo.attributes
+        $('.page>.background').css('background-image',`url(${cover})`)
         $('head').append(`<title>${songName}-${singer}-在线试听-网易云音乐</title>`)
         $('.song-name>.name').text(songName)
         $('.song-name>.dash').text('-')

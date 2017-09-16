@@ -1,7 +1,7 @@
 .page{position: relative; z-index:0;overflow:hidden;color:white;}
-.page::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;
-   background:url('../images/song-poster.jpg') center /cover no-repeat;filter:blur(20px);
-   transform:scale(1.5);transform-origin:center top;}
+.page>.background{position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;
+   background:center /cover no-repeat;filter:blur(20px);
+   transform:scale(1.5);transform-origin:center top;transition:all .5s ease;}
 .page::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;
    background:rgba(0,0,0,.5);}
 
