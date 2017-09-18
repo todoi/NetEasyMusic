@@ -6,8 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "eslint": "eslint",
-    "build": "gulp",
-    "watch": "gulp watch",
+    "build": "webpack",
+    "watch": "webpack -w",
+    "deploy": "webpack -p",
     "lint": "gulp lint"
   },
   "repository": {
@@ -26,8 +27,10 @@
   },
   "devDependencies": {
     "autoprefixer": "^7.1.4",
+    "autoprefixer-loader": "^3.2.0",
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.0",
+    "css-loader": "^0.28.7",
     "cssnano": "^3.10.0",
     "eslint": "^4.6.1",
     "eslint-config-standard": "^10.2.1",
@@ -35,10 +38,19 @@
     "eslint-plugin-node": "^5.1.1",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
+    "expose-loader": "^0.7.3",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "file-loader": "^0.11.2",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.0",
     "gulp-eslint": "^4.0.0",
     "gulp-postcss": "^7.0.0",
-    "gulp-uglifyjs": "^0.6.2"
+    "gulp-uglifyjs": "^0.6.2",
+    "html-loader": "^0.5.1",
+    "html-webpack-plugin": "^2.30.1",
+    "image-webpack-loader": "^3.4.2",
+    "postcss-loader": "^2.0.6",
+    "style-loader": "^0.18.2",
+    "webpack": "^3.6.0"
   }
 }

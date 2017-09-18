@@ -6,8 +6,8 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="shortcut icon" href="//s1.music.126.net/music.ico?v1">
-    <link rel="stylesheet" href="./dist/css/common.css">
-    <link rel="stylesheet" href="./dist/css/song.css">
+    <!--<link rel="stylesheet" href="./dist/css/common.css">-->
+    <!--<link rel="stylesheet" href="./dist/css/song.css">-->
     <script src="//at.alicdn.com/t/font_398797_agj89kayh9f6r.js"></script>
 </head>
 <body>
@@ -50,14 +50,9 @@
         <a href="http://music.163.com/m/" class="download">下 载</a>
     </div>
 </div>
-<script src="./vendors/jquery.min.js"></script>
 <script src="./vendors/av-min.js"></script>
+<script src="./dist/song.js"></script>
 <script>
-    !function () {
-        var APP_ID = 'YQ4yjuFRLMM8TRf2w3pSr3QH-gzGzoHsz';
-        var APP_KEY = 'oBQKY2jc2MYHDcxLP3QoLxtL';
-        AV.init({appId: APP_ID, appKey: APP_KEY});
-    }()
 
     let objectID = window.location.search.match(/^\?id=(.*)/)[1]
     var query = new AV.Query('Song');
