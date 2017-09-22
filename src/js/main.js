@@ -1,5 +1,9 @@
 window.app.toggleSearchPage = toggleSearchPage
 
+document.querySelector('.close').addEventListener('click',function(e){
+    e.currentTarget.parentNode.remove()
+})
+
 //tab切换 推荐歌单 | 热榜 | 搜索
 $('.tabNav>li').on('click', function (e) {
     var $element = $(e.currentTarget)
