@@ -193,11 +193,11 @@
         $('.disc').toggleClass('active')
         if($('.disc.active').length){
             $('.media>audio')[0].play()
-            $('.disc>.song-poster').css('animation','circle 20s linear infinite')
+            $('.disc>.song-poster').css('animation-play-state','running')
 
         }else{
             $('.media>audio')[0].pause()
-            $('.disc>.song-poster').css('animation','circle 20s linear infinite paused')
+            $('.disc>.song-poster').css('animation-play-state','paused')
         }
     })
 </script>

@@ -23,8 +23,9 @@
    margin-top:-92px;margin-left:-92px;background:url(../images/disc_default.png) center/cover no-repeat;
    animation: circle 20s infinite linear paused;z-index:1;}
 .player-wrapper>.disc>.song-poster{width:185px;height:185px;position:relative;top:50%;left:50%;border-radius:50%;
-   margin-top:-92px;margin-left:-92px;background: center/cover no-repeat; z-index:1;}
+   animation: circle 20s infinite linear paused;margin-top:-92px;margin-left:-92px;background: center/cover no-repeat; z-index:1;}
 .player-wrapper>.disc.active>.default-poster{animation: circle 20s infinite linear;}
+.player-wrapper>.disc.active>.song-poster{animation: circle 20s infinite linear;}
 /*播放、暂停键*/
 .icon { width: 58px; height: 58px;vertical-align: middle; fill: white; overflow: hidden; }
 .player-wrapper>.disc>.song-poster>.control{display:none;width: 56px; height: 56px;position:absolute;top:50%;left:50%;
