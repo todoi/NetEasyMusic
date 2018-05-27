@@ -29,7 +29,7 @@
             </div>
         </div>
         <div class="media">
-            <audio src=""></audio>
+            <audio src="" preload=auto></audio>
         </div>
     </div>
     <div class="song-info">
@@ -53,6 +53,7 @@
 <script src="./vendors/jquery.min.js"></script>
 <script src="./vendors/av-min.js"></script>
 <script>
+
     !function () {
         var APP_ID = 'YQ4yjuFRLMM8TRf2w3pSr3QH-gzGzoHsz';
         var APP_KEY = 'oBQKY2jc2MYHDcxLP3QoLxtL';
@@ -72,6 +73,8 @@
         $('.song-name>.singer').text(singer)
         $('.disc>.song-poster').css('background-image',`url(${cover})`)
         $('.media>audio').attr('src',mp3)
+        // console.log($('.media>audio').attr('src'))
+        // console.log(mp3)
         var lyricObject =window.JSON.parse(lyric)
         var origin = lyricObject.lyric
         var translation = lyricObject.translation
@@ -181,7 +184,9 @@
 
     $('.media>audio').on('canplay',function(e){
         $('.disc>.song-poster>.control').addClass('canplay')
+        // console.log('canplay')
     })
+
     $('.media>audio').on('ended',function(e){
         $('.disc').removeClass('active')
         $('.disc>.song-poster').css('animation','none')
